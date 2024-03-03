@@ -4,14 +4,13 @@ namespace IICN\Notification\Http\Controllers\Notification;
 
 use IICN\Notification\Http\Controllers\Controller;
 use IICN\Notification\Http\Requests\StoreNotificationRequest;
-use IICN\Notification\Http\Resources\NotificationResource;
 use IICN\Notification\Models\Notification;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use IICN\Notification\Services\Response\NotificationResponse;
 use Illuminate\Support\Facades\Auth;
 
 class Store extends Controller
 {
-    public function __invoke(StoreNotificationRequest $request): AnonymousResourceCollection
+    public function __invoke(StoreNotificationRequest $request)
     {
         $data = [
             'link' => $request->validated('link'),
@@ -59,7 +58,7 @@ class Store extends Controller
             }
         }
 
-        $notification = Notification::query()->create([
+        Notification::query()->create([
             'title' => $request->validated('title'),
             'content' => $request->validated('content'),
             'image_url' => $request->validated('image_url'),
@@ -69,6 +68,6 @@ class Store extends Controller
             'send_date' => $request->validated('send_date'),
         ]);
 
-        return NotificationResource::collection($notification);
+        return NotificationResponse::success();
     }
 }
