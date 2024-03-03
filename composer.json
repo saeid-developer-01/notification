@@ -19,7 +19,7 @@
     "extra": {
         "laravel": {
             "providers": [
-              "NotificationServiceProvider"
+              "IICN\\Notification\\NotificationServiceProvider"
             ],
             "aliases": {
                 "NotificationSender": "IICN\\Notification\\NotificationSender"
