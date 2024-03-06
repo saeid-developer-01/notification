@@ -40,5 +40,8 @@ return [
 
     "middlewares" => [
 
+    ],
+    "admin_middlewares" => [
+
     ]
 ];
