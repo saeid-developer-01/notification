@@ -3,7 +3,6 @@
 namespace IICN\Notification;
 
 use IICN\Notification\Http\Middleware\AuthNotification;
-use IICN\Notification\Services\Response\NotificationResponse;
 use Illuminate\Support\ServiceProvider;
 
 class NotificationServiceProvider extends ServiceProvider
