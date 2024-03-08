@@ -5,6 +5,7 @@ namespace IICN\Notification\Http\Controllers\Notification;
 use IICN\Notification\Http\Controllers\Controller;
 use IICN\Notification\Http\Requests\StoreNotificationRequest;
 use IICN\Notification\Models\Notification;
+use IICN\Notification\SendNotification;
 use IICN\Notification\Services\Response\NotificationResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,12 +13,46 @@ class Store extends Controller
 {
     public function __invoke(StoreNotificationRequest $request)
     {
+        $notifications = $this->createCollectionNotifications($request);
+
+        $this->sendNotifications($notifications);
+
+        return NotificationResponse::success(trans('notification::messages.send_notification_success'));
+    }
+
+    private function sendNotifications($notifications)
+    {
+        $notifications->map(function (Notification $notification) {
+            $notificationResource = \IICN\Notification\Resources\Notification::create(
+                title: $notification->title,
+                body: $notification->content,
+                image: $notification->image_url,
+                action: $notification->data['action'] ?? "",
+                name: $notification->data['name'] ?? "",
+                link: $notification->data['link'] ?? "",
+                ayeh: $notification->data['ayeh'] ?? "",
+            );
+
+            if (!$notification->send_date) {
+                \Illuminate\Support\Facades\Notification::route('fcm', $notification->condition)
+                    ->route('FCMTargetType', \Kreait\Firebase\Messaging\MessageTarget::CONDITION)
+                    ->notify(new SendNotification($notificationResource));
+            }
+        });
+    }
+
+
+    private function createCollectionNotifications($request)
+    {
         $data = [
             'link' => $request->validated('link'),
             'action' => $request->validated('action'),
             'ayeh' => $request->validated('ayeh'),
             'name' => $request->validated('name'),
         ];
+
+
+        //TODO:: apply users and timezone
 
         $conditions = "'tz_test' in topic";
         if ($request->validated('platform') === 'android') {
@@ -58,7 +93,7 @@ class Store extends Controller
             }
         }
 
-        Notification::query()->create([
+        $notification = Notification::query()->create([
             'title' => $request->validated('title'),
             'content' => $request->validated('content'),
             'image_url' => $request->validated('image_url'),
@@ -68,6 +103,6 @@ class Store extends Controller
             'send_date' => $request->validated('send_date'),
         ]);
 
-        return NotificationResponse::success();
+        return collect([$notification]);
     }
 }

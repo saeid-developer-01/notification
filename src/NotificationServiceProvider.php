@@ -21,10 +21,6 @@ class NotificationServiceProvider extends ServiceProvider
         $this->runningInConsole();
 
         $this->publish();
-
-        $this->app->bind('notificationSender', function () {
-            return new \IICN\Notification\Services\NotificationSender();
-        });
     }
 
     /**
