@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string("timezone")->nullable();
             $table->timestamp("send_date")->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

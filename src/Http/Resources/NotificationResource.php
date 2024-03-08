@@ -12,12 +12,13 @@ class NotificationResource extends JsonResource
     {
         return [
             'id' => $this->id ?? 0,
-            'name' => $this->name ?? '',
-            'topic' => $this->topic ?? '',
-            'condition' => $this->condition,
+            'title' => $this->title ?? "",
+            'condition' => $this->condition ?? "",
+            'image_url' => $this->image_url ?? "",
+            'user_id' => $this->user_id ?? 0,
             'data' => $this->data ?? [],
             'model_id' => $this->model_id ?? 0,
-            'model_type' => $this->model_type ?? '',
+            'model_type' => $this->model_type ?? "",
             'timezone' => $this->timezone ?? '',
             'send_date' => $this->send_date ?? '',
         ];

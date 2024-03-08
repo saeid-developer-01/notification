@@ -54,7 +54,7 @@ class Store extends Controller
 
         //TODO:: apply users and timezone
 
-        $conditions = "'tz_test' in topic";
+        $conditions = "'tz_test' in topics";
         if ($request->validated('platform') === 'android') {
             $conditions .= " && 'os_1' in topics";
         } elseif ($request->validated('platform') === 'ios') {
