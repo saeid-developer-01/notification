@@ -44,6 +44,7 @@ class StoreNotificationRequest extends FormRequest
             'users.*' => 'required|string|email|distinct',
             'received_time' => 'required|boolean',
             'send_date' => 'string|date_format:Y-m-d H:i',
+            'test' => 'boolean|nullable',
         ];
     }
 }

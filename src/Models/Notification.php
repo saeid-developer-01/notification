@@ -3,6 +3,7 @@
 namespace IICN\Notification\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Notification extends Model
@@ -32,4 +33,9 @@ class Notification extends Model
         'data' => 'json',
         'send_date' => 'datetime',
     ];
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(config('notification.user_model'));
+    }
 }

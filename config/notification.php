@@ -19,6 +19,10 @@ return [
 
     'additional_resource_class' => \IICN\Notification\Http\Resources\CollectionAdditionalTrait::class,
 
+    'user_model' => \App\Models\User::class,
+
+    'timezone_model' => \Modules\Common\Entities\Timezone::class,
+
 
     "language_codes" => [
         1 => 'en',
@@ -41,6 +45,7 @@ return [
     "middlewares" => [
 
     ],
+
     "admin_middlewares" => [
 
     ]
