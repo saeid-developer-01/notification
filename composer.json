@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "iicn/schedule": "^1.0.4",
+        "iicn/schedule": "^1.0.4"
     },
     "autoload": {
         "psr-4": {
