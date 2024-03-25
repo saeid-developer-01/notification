@@ -14,7 +14,7 @@ use IICN\Notification\Resources\Notification as NotificationResource;
 use Illuminate\Support\Facades\Notification as NotificationSender;
 use IICN\Schedule\TaskScheduler;
 use Illuminate\Support\Facades\Auth;
-use phpDocumentor\Reflection\Types\Collection;
+use Illuminate\Support\Collection;
 use Kreait\Firebase\Messaging\MessageTarget;
 
 class Store extends Controller
