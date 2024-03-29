@@ -2,6 +2,7 @@
 
 namespace IICN\Notification\Http\Controllers\Notification;
 
+use Carbon\Carbon;
 use IICN\Notification\Constants\Topics;
 use IICN\Notification\Http\Controllers\Controller;
 use IICN\Notification\Http\Requests\StoreNotificationRequest;
@@ -64,7 +65,7 @@ class Store extends Controller
 
     private function sendWithSchedule(array $resources, Notification $notification)
     {
-        TaskScheduler::do(SendNotificationWithSchedule::class, [$notification->condition, $resources])->at($notification->send_date);
+        TaskScheduler::do(SendNotificationWithSchedule::class, [$notification->condition, $resources])->at(Carbon::create($notification->send_date)->format("Y-m-d H:i"));
     }
 
     private function createCollectionNotifications($request): Collection
