@@ -34,7 +34,9 @@ class SendNotificationWithSchedule extends ScheduleBuilder
 
         $condition = "";
 
-        foreach (array_unique($timezones) as $key => $timezone) {
+        $timezones = array_unique($timezones);
+
+        foreach ($timezones as $key => $timezone) {
             if ($key === array_key_first($timezones)) {
                 $condition .= "('" . Topics::PRE_TIMEZONE . "{$timezone}' in topics";
             } else {
