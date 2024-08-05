@@ -7,16 +7,14 @@ use IICN\Notification\Constants\Topics;
 use IICN\Notification\Http\Controllers\Controller;
 use IICN\Notification\Http\Requests\StoreNotificationRequest;
 use IICN\Notification\Models\Notification;
-use IICN\Notification\Resources\FcmResource;
+use IICN\Notification\NotificationSender;
 use IICN\Notification\SendNotification;
 use IICN\Notification\Services\Response\NotificationResponse;
 use IICN\Notification\Services\SendNotificationWithSchedule;
 use IICN\Notification\Resources\Notification as NotificationResource;
-use Illuminate\Support\Facades\Notification as NotificationSender;
 use IICN\Schedule\TaskScheduler;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
-use Kreait\Firebase\Messaging\MessageTarget;
 
 class Store extends Controller
 {
@@ -51,16 +49,9 @@ class Store extends Controller
             } elseif($notification->send_date) {
                 $this->sendWithSchedule($resources, $notification);
             } else {
-                $this->sendNowWithCondition($notificationResource, $notification->condition);
+                NotificationSender::toTopics($notificationResource, $notification->condition);
             }
         });
-    }
-
-    private function sendNowWithCondition(FcmResource $notificationResource, string $conditions)
-    {
-        NotificationSender::route('fcm', $conditions)
-            ->route('FCMTargetType', MessageTarget::CONDITION)
-            ->notify(new SendNotification($notificationResource));
     }
 
     private function sendWithSchedule(array $resources, Notification $notification)
@@ -106,13 +97,13 @@ class Store extends Controller
         $conditions  = [];
 
         if ($request->validated('test')) {
-            $conditions[] = "'" . Topics::TEST . "' in topics";
+            $conditions[] = "'" . config("notification.topic_names.test", Topics::TEST) . "' in topics";
         }
 
         if ($request->validated('platform') === 'android') {
-            $conditions[] = "'" . Topics::ANDROID_PLATFORM . "' in topics";
+            $conditions[] = "'" . config("notification.topic_names.android", Topics::ANDROID_PLATFORM) . "' in topics";
         } elseif ($request->validated('platform') === 'ios') {
-            $conditions[] = "'" . Topics::IOS_PLATFORM . "' in topics";
+            $conditions[] = "'" . config("notification.topic_names.ios", Topics::IOS_PLATFORM) . "' in topics";
         }
 
         if ($request->validated('platform') and $request->validated('version')) {

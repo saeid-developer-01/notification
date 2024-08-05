@@ -1,5 +1,7 @@
 <?php
 
+use IICN\Notification\Constants\Topics;
+
 return [
     'guard' => "api",
 
@@ -16,6 +18,15 @@ return [
 
     'response_class' => \IICN\Notification\Services\Response\Responser::class,
 
+    'default_send_to_test_topic' => !app()->isProduction(),
+
+    'topic_names' => [
+        "test" => Topics::TEST,
+
+        "android" => Topics::ANDROID_PLATFORM,
+
+        "ios" => Topics::IOS_PLATFORM,
+    ],
 
     'additional_resource_class' => \IICN\Notification\Http\Resources\CollectionAdditionalTrait::class,
 

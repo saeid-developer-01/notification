@@ -3,9 +3,9 @@
 namespace IICN\Notification\Services;
 
 use IICN\Notification\Constants\Topics;
+use IICN\Notification\NotificationSender;
 use IICN\Notification\SendNotification;
 use IICN\Schedule\ScheduleBuilder;
-use Illuminate\Support\Facades\Notification as NotificationSender;
 use IICN\Notification\Resources\Notification as NotificationResource;
 use Kreait\Firebase\Messaging\MessageTarget;
 
@@ -23,9 +23,7 @@ class SendNotificationWithSchedule extends ScheduleBuilder
 
         $conditions = $this->addTimezoneToCondition($this->conditions);
 
-        NotificationSender::route('fcm', $conditions)
-            ->route('FCMTargetType', MessageTarget::CONDITION)
-            ->notify(new SendNotification($notificationResource));
+        NotificationSender::toTopics($notificationResource, $conditions);
     }
 
     public function addTimezoneToCondition(string $conditions): string
